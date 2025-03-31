@@ -52,6 +52,7 @@ public class Instructions {
     }
 
     public String getFactorial(){
+        if(instructions.isEmpty()) return "";
         String factorial = "";
         int counter = 1;
         char currChar = instructions.charAt(0);
