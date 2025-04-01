@@ -18,8 +18,8 @@ public class Main {
 
         Navigator navigator = new Navigator(Directions.EAST);
         Maze maze = new Maze(file, navigator);
-        Instructions instructions = new Instructions(path, maze);
         Algorithm algo = new Algorithm(maze);
+        Instructions instructions = new Instructions(path, maze);
 
         logger.info("**** Computing path");
 

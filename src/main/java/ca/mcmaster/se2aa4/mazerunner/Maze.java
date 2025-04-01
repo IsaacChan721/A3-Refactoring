@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Maze {
+public class Maze{
     private static final Logger logger = LogManager.getLogger();
     private BufferedReader reader;
 
@@ -32,7 +32,6 @@ public class Maze {
 
         try {
             MazeFeatures[] lineChars;
-            int lineNum = 0;
             String line;
             // creates the maze object from the file
             while ((line = reader.readLine()) != null) {
@@ -42,7 +41,6 @@ public class Maze {
                     else lineChars[idx] = MazeFeatures.SPACE;
                 }
                 mazeObject.add(lineChars);
-                lineNum++;
             }
             mazeWidth = mazeObject.get(0).length;
             mazeHeight = mazeObject.size();
@@ -88,6 +86,10 @@ public class Maze {
         return mazeObject;
     }
 
+    public Navigator getNavigator(){
+        return navigator;
+    }
+
     // for troubleshooting purposes only
     public void printMaze(){
         Directions facing = navigator.getFacing();
@@ -109,9 +111,5 @@ public class Maze {
             line = "";
         }
         System.out.println();
-    }
-
-    public Navigator getNavigator(){
-        return navigator;
     }
 }

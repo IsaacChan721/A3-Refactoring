@@ -1,17 +1,27 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-public class Algorithm {
+public class Algorithm implements MazeObserver{
     private Maze maze;
+    private boolean mazeSolved;
     MazeAction action = new MazeAction();
+    
+    MoveForwardCommand mfc;
+    TurnRightCommand trc;
+    TurnLeftCommand tlc;
 
     public Algorithm (Maze maze){
         this.maze = maze;
+        this.mazeSolved = false;
+
+        mfc = new MoveForwardCommand(maze);
+        trc = new TurnRightCommand(maze.getNavigator());
+        tlc = new TurnLeftCommand(maze.getNavigator());
     }
 
     public String rightHandPath(){
+        mfc.addMazeObserver(this);
         String path = "";
-
-        while(maze.getLocation()[0] != maze.getExit()[0] || maze.getLocation()[1] != maze.getExit()[1]){
+        while(!mazeSolved){
             checkRight();
             if(checkForward()){
                 path += "RF";
@@ -35,18 +45,23 @@ public class Algorithm {
     }
 
     private boolean checkForward(){
-        action.setCommand(new MoveForwardCommand(maze));
+        action.setCommand(mfc);
         action.runCommand();
         return maze.isForwardEmpty();
     }
 
     private void checkRight(){
-        action.setCommand(new TurnRightCommand(maze.getNavigator()));
+        action.setCommand(trc);
         action.runCommand();
     }
 
     private void checkLeft(){
-        action.setCommand(new TurnLeftCommand(maze.getNavigator()));
+        action.setCommand(tlc);
         action.runCommand();
+    }
+
+    @Override
+    public void update(){
+        mazeSolved = true;
     }
 }

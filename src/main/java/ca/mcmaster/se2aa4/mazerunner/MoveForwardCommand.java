@@ -1,9 +1,11 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class MoveForwardCommand implements Command{
+public class MoveForwardCommand implements Command, MazeNotifier{
     Maze maze;
+    private ArrayList<MazeObserver> observers = new ArrayList<>();
 
     public MoveForwardCommand(Maze maze){
         this.maze = maze;
@@ -28,5 +30,24 @@ public class MoveForwardCommand implements Command{
         }
         maze.setLocation(location);
         maze.setForwardEmpty(true);
+
+        if(Arrays.equals(location, maze.getExit())) notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers(){
+        for(MazeObserver o: observers){
+            o.update();
+        }
+    }
+
+    @Override
+    public void addMazeObserver(MazeObserver o){
+        observers.add(o);
+    }
+
+    @Override
+    public void removeMazeObserver(MazeObserver o){
+        observers.remove(o);
     }
 }
