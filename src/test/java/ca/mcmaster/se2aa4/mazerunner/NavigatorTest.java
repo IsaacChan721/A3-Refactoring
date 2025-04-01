@@ -1,7 +1,7 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class NavigatorTest {
 
@@ -23,61 +23,72 @@ public class NavigatorTest {
     @Test
     public void testTurnRight() {
         Navigator nav = new Navigator(Directions.NORTH);
-        
-        nav.turnRight();
+        MazeAction action = new MazeAction();
+        action.setCommand(new TurnRightCommand(nav));
+
+        action.runCommand();
         assertEquals(Directions.EAST, nav.getFacing());
         
-        nav.turnRight();
+        action.runCommand();
         assertEquals(Directions.SOUTH, nav.getFacing());
         
-        nav.turnRight();
+        action.runCommand();
         assertEquals(Directions.WEST, nav.getFacing());
         
-        nav.turnRight();
+        action.runCommand();
         assertEquals(Directions.NORTH, nav.getFacing());
     }
 
     @Test
     public void testTurnLeft() {
         Navigator nav = new Navigator(Directions.NORTH);
-        
-        nav.turnLeft();
+        MazeAction action = new MazeAction();
+        action.setCommand(new TurnLeftCommand(nav));
+
+        action.runCommand();
         assertEquals(Directions.WEST, nav.getFacing());
         
-        nav.turnLeft();
+        action.runCommand();
         assertEquals(Directions.SOUTH, nav.getFacing());
         
-        nav.turnLeft();
+        action.runCommand();
         assertEquals(Directions.EAST, nav.getFacing());
         
-        nav.turnLeft();
+        action.runCommand();
         assertEquals(Directions.NORTH, nav.getFacing());
     }
 
     @Test
     public void testMultipleTurns() {
         Navigator nav = new Navigator(Directions.EAST);
+        MazeAction action = new MazeAction();
         
         // Turn right 4 times (full circle)
+        action.setCommand(new TurnRightCommand(nav));
         for (int i = 0; i < 4; i++) {
-            nav.turnRight();
+            action.runCommand();
         }
         assertEquals(Directions.EAST, nav.getFacing());
         
         // Turn left 4 times (full circle)
+        action.setCommand(new TurnLeftCommand(nav));
         for (int i = 0; i < 4; i++) {
-            nav.turnLeft();
+            action.runCommand();
         }
         assertEquals(Directions.EAST, nav.getFacing());
         
         // Mixed turns
-        nav.turnRight();
-        nav.turnLeft();
+        action.setCommand(new TurnRightCommand(nav));
+        action.runCommand();
+        action.setCommand(new TurnLeftCommand(nav));
+        action.runCommand();
         assertEquals(Directions.EAST, nav.getFacing());
         
-        nav.turnRight();
-        nav.turnRight();
-        nav.turnLeft();
+        action.setCommand(new TurnRightCommand(nav));
+        action.runCommand();
+        action.runCommand();
+        action.setCommand(new TurnLeftCommand(nav));
+        action.runCommand();
         assertEquals(Directions.SOUTH, nav.getFacing());
     }
 }

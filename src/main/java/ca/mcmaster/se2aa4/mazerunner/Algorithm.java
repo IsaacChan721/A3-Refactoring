@@ -2,6 +2,7 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class Algorithm {
     private Maze maze;
+    MazeAction action = new MazeAction();
 
     public Algorithm (Maze maze){
         this.maze = maze;
@@ -9,29 +10,43 @@ public class Algorithm {
 
     public String rightHandPath(){
         String path = "";
-        Navigator navigator = maze.getNavigator();
 
         while(maze.getLocation()[0] != maze.getExit()[0] || maze.getLocation()[1] != maze.getExit()[1]){
-            navigator.turnRight();
-            if(maze.moveNavigatorForward()){
+            checkRight();
+            if(checkForward()){
                 path += "RF";
             } else {
-                navigator.turnLeft();
-                if(maze.moveNavigatorForward()){
+                checkLeft();
+                if(checkForward()){
                     path += "F";
                 } else {
-                    navigator.turnLeft();
-                    if(maze.moveNavigatorForward()){
+                    checkLeft();
+                    if(checkForward()){
                         path += "LF";
                     } else {
-                        navigator.turnLeft();
-                        maze.moveNavigatorForward();
+                        checkLeft();
+                        checkForward();
                         path += "LLF";
                     }
                 }
             }
-            //maze.printMaze();
         }
         return path;
+    }
+
+    private boolean checkForward(){
+        action.setCommand(new MoveForwardCommand(maze));
+        action.runCommand();
+        return maze.isForwardEmpty();
+    }
+
+    private void checkRight(){
+        action.setCommand(new TurnRightCommand(maze.getNavigator()));
+        action.runCommand();
+    }
+
+    private void checkLeft(){
+        action.setCommand(new TurnLeftCommand(maze.getNavigator()));
+        action.runCommand();
     }
 }

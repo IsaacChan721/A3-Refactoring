@@ -11,12 +11,15 @@ public class Instructions {
 
     public void excecuteInstruction(){
         //maze.printMaze();
+        MazeAction action = new MazeAction();
         for(int i = 0; i < instructions.length(); i++){
-            if(instructions.charAt(i) == 'F') maze.moveNavigatorForward();
-            else if(instructions.charAt(i) == 'R') maze.getNavigator().turnRight();
-            else if(instructions.charAt(i) == 'L') maze.getNavigator().turnLeft();
+            if(instructions.charAt(i) == 'F') action.setCommand(new MoveForwardCommand(maze));
+            else if(instructions.charAt(i) == 'R') action.setCommand(new TurnRightCommand(maze.getNavigator()));
+            else if(instructions.charAt(i) == 'L') action.setCommand(new TurnLeftCommand(maze.getNavigator()));
+            action.runCommand();
             //maze.printMaze();
         }
+
     }
 
     public void readInstructions(String path){

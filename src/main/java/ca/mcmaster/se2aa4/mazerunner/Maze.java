@@ -17,6 +17,7 @@ public class Maze {
     private int[] location = new int[2]; //coordinate pair
 
     private int mazeWidth, mazeHeight;
+    private boolean forwardEmpty = true;
 
     public Maze(String file, Navigator navigator){
         mazeObject = new ArrayList();
@@ -75,15 +76,16 @@ public class Maze {
         location = coordinate;
     }
 
-    public boolean moveNavigatorForward(){
-        Directions facing = navigator.getFacing();
+    public boolean isForwardEmpty(){
+        return forwardEmpty;
+    }
 
-        if(facing == Directions.NORTH && location[1] != 0 && mazeObject.get(location[1]-1)[location[0]] == MazeFeatures.SPACE) location[1] -= 1;
-        else if(facing == Directions.EAST && location[0] != mazeWidth-1 && mazeObject.get(location[1])[location[0]+1] == MazeFeatures.SPACE) location[0] += 1;
-        else if(facing == Directions.SOUTH && location[1] != mazeHeight-1 && mazeObject.get(location[1]+1)[location[0]] == MazeFeatures.SPACE) location[1] += 1;
-        else if(facing == Directions.WEST && location[0] != 0 && mazeObject.get(location[1])[location[0]-1] == MazeFeatures.SPACE) location[0] -= 1;
-        else return false;
-        return true;
+    public void setForwardEmpty(boolean forwardEmpty){
+        this.forwardEmpty = forwardEmpty;
+    }
+
+    public ArrayList<MazeFeatures[]> getMazeObject(){
+        return mazeObject;
     }
 
     // for troubleshooting purposes only

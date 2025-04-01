@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
 
 public class InstructionsTest {
-
     private Maze mockMaze;
 
     @BeforeEach
